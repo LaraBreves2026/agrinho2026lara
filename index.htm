@@ -1,0 +1,109 @@
+// App.js
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, FlatList, Alert } from 'react-native';
+
+export default function App() {
+  const [farmName, setFarmName] = useState('');
+  const [practice, setPractice] = useState('');
+  const [farms, setFarms] = useState([]);
+
+  const addFarm = () => {
+    if (farmName === '' || practice === '') {
+      Alert.alert('Erro', 'Preencha todos os campos!');
+      return;
+    }
+    const newFarm = {
+      id: Math.random().toString(),
+      name: farmName,
+      practice: practice,
+    };
+    setFarms([...farms, newFarm]);
+    setFarmName('');
+    setPractice('');
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Agro Sustentável 🌱</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Nome da fazenda"
+        value={farmName}
+        onChangeText={setFarmName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Prática sustentável"
+        value={practice}
+        onChangeText={setPractice}
+      />
+      <Button title="Adicionar Fazenda" onPress={addFarm} />
+
+      <Text style={styles.subtitle}>Fazendas Cadastradas:</Text>
+      <FlatList
+        data={farms}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.farmItem}>
+            <Text style={styles.farmText}>
+              {item.name} - {item.practice}
+            </Text>
+          </View>
+        )}
+      />
+
+      <Text style={styles.subtitle}>Dicas de Sustentabilidade:</Text>
+      <View style={styles.tips}>
+        <Text>• Utilize compostagem para fertilizar o solo.</Text>
+        <Text>• Pratique o plantio direto para reduzir erosão.</Text>
+        <Text>• Utilize irrigação inteligente para economizar água.</Text>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#e8f5e9',
+    padding: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#2e7d32',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginTop: 20,
+    marginBottom: 10,
+    color: '#1b5e20',
+  },
+  input: {
+    borderColor: '#1b5e20',
+    borderWidth: 1,
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+    backgroundColor: '#ffffff',
+  },
+  farmItem: {
+    backgroundColor: '#a5d6a7',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+  },
+  farmText: {
+    color: '#1b5e20',
+    fontWeight: '500',
+  },
+  tips: {
+    backgroundColor: '#c8e6c9',
+    padding: 10,
+    borderRadius: 5,
+  },
+});
